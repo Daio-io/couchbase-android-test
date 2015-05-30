@@ -6,9 +6,15 @@ import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Manager;
+import com.couchbase.lite.QueryOptions;
+import com.couchbase.lite.QueryRow;
+import com.couchbase.lite.View;
 import com.couchbase.lite.android.AndroidContext;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +32,25 @@ public class CouchyDatabase {
 
         context = _context;
         initialiseDatabase(_dbName);
+
+    }
+
+    @SuppressWarnings("unchecked")
+    public ArrayList<QueryRow> getAllDocuments() {
+
+        QueryOptions options = new QueryOptions();
+        options.getKeys();
+
+        try {
+            HashMap<String, Object> map =
+                    (HashMap<String, Object>) database.getAllDocs(options);
+
+            return (ArrayList<QueryRow>) map.get("rows");
+
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+            return null;
+        }
 
     }
 
