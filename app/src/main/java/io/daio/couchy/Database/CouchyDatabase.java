@@ -55,7 +55,7 @@ public class CouchyDatabase {
     }
 
     /**
-     * @param document
+     * @param document - The Key Value pair document to save
      * @return {String} The saved document ID
      * @method createDocument
      * @description Method to store a new document in the database
@@ -90,7 +90,7 @@ public class CouchyDatabase {
     }
 
     /**
-     * @param {String} documentId
+     * @param documentId - Id of the document to delete
      * @return {Boolean} Confirms if the document was deleted
      * @method deleteDocumentById
      * @description Deletes a saved document by its stored ID
@@ -125,9 +125,7 @@ public class CouchyDatabase {
 
             database = manager.getDatabase(dbName);
 
-        } catch (CouchbaseLiteException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (CouchbaseLiteException | IOException e) {
             e.printStackTrace();
         }
 
