@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
     public void addThing() {
         String thingValue = thingsField.getText().toString();
         if (!thingValue.isEmpty()) {
-            ThingModel thingModel = new ThingModel("Test", thingValue);
+            ThingModel thingModel = new ThingModel("Thing", thingValue);
             EventBus.getDefault().post(thingModel);
         }
     }

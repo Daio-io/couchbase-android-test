@@ -20,11 +20,11 @@ public class ThingsListAdapter extends ArrayAdapter {
         super(context, resource);
         EventBus.getDefault().register(this);
         this.setNotifyOnChange(true);
-        database = new CouchyDatabase("test", context);
+        database = new CouchyDatabase("things", context);
         ArrayList<QueryRow> allThings = database.getAllDocuments();
 
         for (QueryRow thing : allThings) {
-            this.add(thing.getDocument().getProperty("Test"));
+            this.add(thing.getDocument().getProperty("Thing"));
         }
     }
 
