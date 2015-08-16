@@ -26,11 +26,19 @@
         android:layout_alignParentStart="true" />
     <Button
         android:id="@+id/addBtn"
-        android:layout_width="fill_parent"
+        android:layout_width="100dp"
         android:layout_height="50dp"
         android:text="@string/add_text"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+    <Button
+        android:id="@+id/dropBtn"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="@string/drop_button_text"
+        android:layout_below="@+id/thingField"
+        android:layout_alignRight="@+id/thingField"
+        android:layout_alignEnd="@+id/thingField" />
 
 </RelativeLayout>
