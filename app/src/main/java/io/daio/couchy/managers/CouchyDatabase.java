@@ -95,6 +95,22 @@ public class CouchyDatabase {
         return documentToDelete.isDeleted();
     }
 
+    /**
+     * Remove all documents from the database
+     * @return {Boolean} Confirms if all documents were removed
+     */
+    public Boolean deleteAllDocuments() {
+        ArrayList<QueryRow> documents = this.getAllDocuments();
+
+        for (QueryRow doc : documents){
+            try {
+                doc.getDocument().delete();
+            } catch (CouchbaseLiteException e){
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
 
     /**
      * @param dbName - Name of database to find or create
