@@ -2,37 +2,47 @@ package io.daio.couchy;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.ListView;
+import java.util.HashMap;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
+import io.daio.couchy.managers.CouchyDatabase;
+import io.daio.couchy.views.ThingsListAdapter;
 
 
 public class MainActivity extends Activity {
+    @Bind(R.id.thingsList) ListView listy;
+    @Bind(R.id.thingField) EditText thingsField;
+
+    CouchyDatabase database;
+    ThingsListAdapter things;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        database = new CouchyDatabase("test", getApplicationContext());
+        things = new ThingsListAdapter(getApplicationContext(),
+                R.layout.list_item);
+        listy.setAdapter(things);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    @OnClick(R.id.addBtn)
+    public void addThing() {
+        String thingValue = thingsField.getText().toString();
+        HashMap<String, Object> thing = new HashMap<>();
+
+        thing.put("Test", thingValue);
+
+        database.createDocument(thing);
+
+        EventBus.getDefault().post(thingValue);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

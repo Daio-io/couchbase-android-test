@@ -1,4 +1,4 @@
-package io.daio.couchy.Database;
+package io.daio.couchy.managers;
 
 import android.content.Context;
 
@@ -8,13 +8,11 @@ import com.couchbase.lite.Document;
 import com.couchbase.lite.Manager;
 import com.couchbase.lite.QueryOptions;
 import com.couchbase.lite.QueryRow;
-import com.couchbase.lite.View;
 import com.couchbase.lite.android.AndroidContext;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,15 +27,12 @@ public class CouchyDatabase {
     private Database database;
 
     public CouchyDatabase(String _dbName, Context _context) {
-
         context = _context;
         initialiseDatabase(_dbName);
-
     }
 
     @SuppressWarnings("unchecked")
     public ArrayList<QueryRow> getAllDocuments() {
-
         QueryOptions options = new QueryOptions();
         options.getKeys();
 
@@ -46,12 +41,10 @@ public class CouchyDatabase {
                     (HashMap<String, Object>) database.getAllDocs(options);
 
             return (ArrayList<QueryRow>) map.get("rows");
-
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
             return null;
         }
-
     }
 
     /**
@@ -61,13 +54,10 @@ public class CouchyDatabase {
      * @description Method to store a new document in the database
      */
     public String createDocument(Map<String, Object> document) {
-
         Document newDocument = database.createDocument();
 
         try {
-
             newDocument.putProperties(document);
-
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         }
@@ -82,11 +72,9 @@ public class CouchyDatabase {
      * @description Get a saved document by its stored ID
      */
     public Map<String, Object> getDocumentById(String documentId) {
-
         Document retrievedDocument = database.getDocument(documentId);
 
         return retrievedDocument.getProperties();
-
     }
 
     /**
@@ -96,8 +84,8 @@ public class CouchyDatabase {
      * @description Deletes a saved document by its stored ID
      */
     public Boolean deleteDocumentById(String documentId) {
-
         Document documentToDelete = database.getDocument(documentId);
+
         try {
             documentToDelete.delete();
         } catch (CouchbaseLiteException e) {
@@ -105,7 +93,6 @@ public class CouchyDatabase {
         }
 
         return documentToDelete.isDeleted();
-
     }
 
 
