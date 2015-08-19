@@ -3,36 +3,24 @@ package io.daio.couchy.views;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
-import com.couchbase.lite.QueryRow;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import de.greenrobot.event.EventBus;
-import io.daio.couchy.managers.CouchyDatabase;
 import io.daio.couchy.models.ThingModel;
 
-public class ThingsListAdapter extends ArrayAdapter {
+public class ThingsListAdapter extends ArrayAdapter<String> {
 
-    CouchyDatabase database;
-
-    public ThingsListAdapter(Context context, int resource) {
+    public ThingsListAdapter(Context context, int resource, ArrayList<String> initialList) {
         super(context, resource);
         EventBus.getDefault().register(this);
         this.setNotifyOnChange(true);
-        database = new CouchyDatabase("things", context);
-        ArrayList<QueryRow> allThings = database.getAllDocuments();
-
-        for (QueryRow thing : allThings) {
-            this.add(thing.getDocument().getProperty("Thing"));
+        if (initialList != null) {
+            this.addAll(initialList);
         }
     }
 
     public void insert(String key, String value) {
         if (key != null && value != null) {
-            HashMap<String, Object> thingDoc = new HashMap<>();
-            thingDoc.put(key, value);
-            database.createDocument(thingDoc);
             this.add(value);
         }
     }
@@ -40,7 +28,6 @@ public class ThingsListAdapter extends ArrayAdapter {
     public void onEvent(String action) {
         if (action.equals("DROP")) {
             this.clear();
-            database.deleteAllDocuments();
         }
     }
 
