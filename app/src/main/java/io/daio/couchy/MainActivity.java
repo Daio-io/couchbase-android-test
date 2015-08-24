@@ -37,16 +37,9 @@ public class MainActivity extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        database = ThingsDatabase.getInstance(getApplicationContext());
 
-        ArrayList<QueryRow> allThings = database.getAllDocuments();
-        ArrayList<String> thingsList = new ArrayList<>();
-
-        for (QueryRow thing : allThings) {
-            thingsList.add(thing.getDocument().getProperty("Thing").toString());
-        }
         ThingsListAdapter things = new ThingsListAdapter(getApplicationContext(),
-                R.layout.list_item, thingsList);
+                R.layout.list_item, getThingsList());
 
         listy.setAdapter(things);
     }
@@ -68,6 +61,18 @@ public class MainActivity extends Activity {
     public void dropData() {
         database.deleteAllDocuments();
         EventBus.getDefault().post("DROP");
+    }
+
+    private ArrayList<String> getThingsList() {
+        database = ThingsDatabase.getInstance(getApplicationContext());
+
+        ArrayList<QueryRow> allThings = database.getAllDocuments();
+        ArrayList<String> thingsList = new ArrayList<>();
+
+        for (QueryRow thing : allThings) {
+            thingsList.add(thing.getDocument().getProperty("Thing").toString());
+        }
+        return thingsList;
     }
 
 }
